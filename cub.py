@@ -85,7 +85,7 @@ class cub200(torch.utils.data.Dataset):
 
             image_path = 'CUB_200_2011/images/' + id2name[_id, 1]
             image_path = os.path.join(self.root, image_path)
-            image = Image.open(image_path)#tar.extractfile(tar.getmember(image_path))
+            # image = Image.open(image_path)#tar.extractfile(tar.getmember(image_path))
             if not image:
                 print('get image: '+image_path + ' error')
                 raise RuntimeError
