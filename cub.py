@@ -52,19 +52,22 @@ class cub200(torch.utils.data.Dataset):
         if not os.path.isdir(processed_data_path):
             os.mkdir(processed_data_path)
 
-        cub_tgz_path = os.path.join(self.root, 'CUB_200_2011.tgz')
+        # cub_tgz_path = os.path.join(self.root, 'CUB_200_2011.tgz')
         images_txt_path = 'CUB_200_2011/images.txt'
         train_test_split_txt_path = 'CUB_200_2011/train_test_split.txt'
 
-        tar = tarfile.open(cub_tgz_path, 'r:gz')
-        images_txt = tar.extractfile(tar.getmember(images_txt_path))
-        train_test_split_txt = tar.extractfile(tar.getmember(train_test_split_txt_path))
-        if not (images_txt and train_test_split_txt):
-            print('Extract image.txt and train_test_split.txt Error!')
-            raise RuntimeError('cub-200-1011')
-
-        images_txt = images_txt.read().decode('utf-8').splitlines()
-        train_test_split_txt = train_test_split_txt.read().decode('utf-8').splitlines()
+        # tar = tarfile.open(cub_tgz_path, 'r:gz')
+        # images_txt = tar.extractfile(tar.getmember(images_txt_path))
+        # train_test_split_txt = tar.extractfile(tar.getmember(train_test_split_txt_path))
+        # if not (images_txt and train_test_split_txt):
+        #     print('Extract image.txt and train_test_split.txt Error!')
+        #     raise RuntimeError('cub-200-1011')
+        with open(os.path.join(self.root, images_txt_path), 'r') as file:
+            images_txt = file.readlines()
+        with open(os.path.join(self.root, train_test_split_txt_path), 'r') as file:
+            train_test_split_txt = file.readlines()
+        # images_txt = images_txt.read().decode('utf-8').splitlines()
+        # train_test_split_txt = train_test_split_txt.read().decode('utf-8').splitlines()
 
         id2name = np.genfromtxt(images_txt, dtype=str)
         id2train = np.genfromtxt(train_test_split_txt, dtype=int)
@@ -81,7 +84,7 @@ class cub200(torch.utils.data.Dataset):
             cnt += 1
 
             image_path = 'CUB_200_2011/images/' + id2name[_id, 1]
-            image = tar.extractfile(tar.getmember(image_path))
+            image = Image.open(image_path)#tar.extractfile(tar.getmember(image_path))
             if not image:
                 print('get image: '+image_path + ' error')
                 raise RuntimeError
@@ -104,7 +107,7 @@ class cub200(torch.utils.data.Dataset):
             if cnt%1000 == 0:
                 print('{} images have been extracted'.format(cnt))
         print('Total images: {}, training images: {}. testing images: {}'.format(cnt, train_cnt, test_cnt))
-        tar.close()
+        # tar.close()
         pickle.dump((train_data, train_labels),
                     open(os.path.join(self.root, 'processed/train.pkl'), 'wb'))
         pickle.dump((test_data, test_labels),
