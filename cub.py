@@ -89,7 +89,7 @@ class cub200(torch.utils.data.Dataset):
             # if not image:
             #     print('get image: '+image_path + ' error')
             #     raise RuntimeError
-            image = Image.open(image)
+            image = Image.open(image_path)
             label = int(id2name[_id, 1][:3]) - 1
 
             if image.getbands()[0] == 'L':
