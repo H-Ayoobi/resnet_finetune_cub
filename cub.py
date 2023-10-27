@@ -43,7 +43,7 @@ class cub200(torch.utils.data.Dataset):
 
     def _check_processed(self):
         assert os.path.isdir(self.root) == True
-        assert os.path.isfile(os.path.join(self.root, 'CUB_200_2011.tgz')) == True
+        assert os.path.isfile(os.path.join(self.root, '/data2/CUB200/CUB_200_2011.tgz')) == True
         return (os.path.isfile(os.path.join(self.root, 'processed/train.pkl')) and
                 os.path.isfile(os.path.join(self.root, 'processed/test.pkl')))
 
@@ -53,8 +53,8 @@ class cub200(torch.utils.data.Dataset):
             os.mkdir(processed_data_path)
 
         cub_tgz_path = os.path.join(self.root, 'CUB_200_2011.tgz')
-        images_txt_path = 'CUB_200_2011/images.txt'
-        train_test_split_txt_path = 'CUB_200_2011/train_test_split.txt'
+        images_txt_path = '/data2/CUB200/CUB_200_2011/images.txt'
+        train_test_split_txt_path = '/data2/CUB200/CUB_200_2011/train_test_split.txt'
 
         tar = tarfile.open(cub_tgz_path, 'r:gz')
         images_txt = tar.extractfile(tar.getmember(images_txt_path))
@@ -80,7 +80,7 @@ class cub200(torch.utils.data.Dataset):
         for _id in range(id2name.shape[0]):
             cnt += 1
 
-            image_path = 'CUB_200_2011/images/' + id2name[_id, 1]
+            image_path = '/data2/CUB200/CUB_200_2011/images/' + id2name[_id, 1]
             image = tar.extractfile(tar.getmember(image_path))
             if not image:
                 print('get image: '+image_path + ' error')
