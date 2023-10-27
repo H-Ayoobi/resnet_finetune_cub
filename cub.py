@@ -43,7 +43,7 @@ class cub200(torch.utils.data.Dataset):
 
     def _check_processed(self):
         assert os.path.isdir(self.root) == True
-        assert os.path.isfile(os.path.join(self.root, 'CUB_200_2011.tgz')) == True
+        # assert os.path.isfile(os.path.join(self.root, 'CUB_200_2011.tgz')) == True
         return (os.path.isfile(os.path.join(self.root, 'processed/train.pkl')) and
                 os.path.isfile(os.path.join(self.root, 'processed/test.pkl')))
 
